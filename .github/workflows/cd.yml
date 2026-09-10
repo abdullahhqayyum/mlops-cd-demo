@@ -55,3 +55,15 @@ jobs:
       - name: Show version
         run: |
           echo "Building version ${{ steps.version.outputs.version }}"
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            -t ghcr.io/${{ github.repository }}:${{ steps.version.outputs.version }} \
+            -t ghcr.io/${{ github.repository }}:latest \
+            .
+
+      - name: Push Docker images
+        run: |
+          docker push ghcr.io/${{ github.repository }}:${{ steps.version.outputs.version }}
+          docker push ghcr.io/${{ github.repository }}:latest
